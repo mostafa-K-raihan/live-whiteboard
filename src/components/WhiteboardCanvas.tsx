@@ -1,21 +1,33 @@
 import React, { useRef, useState } from 'react';
-import { Stage, Layer, Line } from 'react-konva';
+import { Stage, Layer, Line, KonvaEventObject } from 'react-konva';
+import Konva from 'konva';
 
-const WhiteboardCanvas: React.FC = () => {
-  const [lines, setLines] = useState<{ points: number[]; color: string; strokeWidth: number }[]>([]);
+interface WhiteboardCanvasProps {
+  width?: number;
+  height?: number;
+}
+
+const WhiteboardCanvas: React.FC<WhiteboardCanvasProps> = ({
+  width = window.innerWidth,
+  height = window.innerHeight - 80,
+}) => {
+  const [lines, setLines] = useState<{ points: number[]; color: string; strokeWidth: number }[]>(
+    []
+  );
   const isDrawing = useRef(false);
+  const stageRef = useRef<Konva.Stage | null>(null);
 
-  const handleMouseDown = (e: any) => {
+  const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
     setLines([...lines, { points: [pos.x, pos.y], color: '#222', strokeWidth: 3 }]);
   };
 
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
     if (!isDrawing.current) return;
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
-    setLines((prevLines) => {
+    setLines(prevLines => {
       const lastLine = prevLines[prevLines.length - 1];
       const newLines = prevLines.slice(0, -1);
       return [
@@ -32,32 +44,64 @@ const WhiteboardCanvas: React.FC = () => {
     isDrawing.current = false;
   };
 
+  // Handle touch events with specific preventDefault to avoid issues
+  const handleTouchStart = (e: KonvaEventObject<TouchEvent>) => {
+    e.evt.preventDefault();
+    handleMouseDown(e as unknown as KonvaEventObject<MouseEvent>);
+  };
+
+  const handleTouchMove = (e: KonvaEventObject<TouchEvent>) => {
+    e.evt.preventDefault();
+    handleMouseMove(e as unknown as KonvaEventObject<MouseEvent>);
+  };
+
+  const handleTouchEnd = (e: KonvaEventObject<TouchEvent>) => {
+    e.evt.preventDefault();
+    handleMouseUp();
+  };
+
+  // Clear the canvas
+  const clearCanvas = () => {
+    setLines([]);
+  };
+
   return (
-    <Stage
-      width={window.innerWidth}
-      height={window.innerHeight - 80}
-      onMouseDown={handleMouseDown}
-      onMousemove={handleMouseMove}
-      onMouseup={handleMouseUp}
-      onTouchStart={handleMouseDown}
-      onTouchMove={handleMouseMove}
-      onTouchEnd={handleMouseUp}
-      style={{ background: '#fff', border: '1px solid #eee' }}
-    >
-      <Layer>
-        {lines.map((line, i) => (
-          <Line
-            key={i}
-            points={line.points}
-            stroke={line.color}
-            strokeWidth={line.strokeWidth}
-            tension={0.5}
-            lineCap="round"
-            globalCompositeOperation="source-over"
-          />
-        ))}
-      </Layer>
-    </Stage>
+    <div className="whiteboard-container">
+      <div className="whiteboard-tools p-2">
+        <button
+          onClick={clearCanvas}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Clear Canvas
+        </button>
+      </div>
+      <Stage
+        width={width}
+        height={height}
+        onMouseDown={handleMouseDown}
+        onMousemove={handleMouseMove}
+        onMouseup={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        ref={stageRef}
+        style={{ background: '#fff', border: '1px solid #eee' }}
+      >
+        <Layer>
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke={line.color}
+              strokeWidth={line.strokeWidth}
+              tension={0.5}
+              lineCap="round"
+              globalCompositeOperation="source-over"
+            />
+          ))}
+        </Layer>
+      </Stage>
+    </div>
   );
 };
 
