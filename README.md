@@ -1,54 +1,64 @@
-# React + TypeScript + Vite
+# 🎨 Live Collaborative Whiteboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, real-time collaborative whiteboard app built with React, TypeScript, Vite, and Konva.js.  
+Designed to strengthen front-end skills using the latest technologies and best practices.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Intent
 
-## Expanding the ESLint configuration
+- **Learning:** Deepen front-end expertise by building a feature-rich, interactive web app from scratch.
+- **Modern Stack:** Use the latest tools (Vite, pnpm, React, TypeScript, Tailwind, Zustand, Konva, etc.).
+- **Portfolio:** Create a visually impressive, real-world project to showcase in your portfolio.
+- **Extensibility:** Lay the groundwork for advanced features like real-time collaboration, AI assistance, and more.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+## 🎯 Project Goals
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [x] **Modern Project Setup:** Vite + React + TypeScript + pnpm + Tailwind + Zustand + React Router
+- [x] **Basic Whiteboard Canvas:** Freehand drawing with mouse/touch (Konva.js)
+- [ ] **Drawing Tools:** Color picker, stroke width, eraser
+- [ ] **Sticky Notes & Shapes:** Add, move, and edit notes/shapes
+- [ ] **Real-Time Collaboration:** Multi-user drawing (Firebase/Supabase/WebSockets)
+- [ ] **AI Assistance:** Smart shape recognition, text summarization, OCR, etc.
+- [ ] **Authentication:** Google/email login
+- [ ] **Export:** Download board as image/PDF
+- [ ] **Testing & CI/CD:** Automated tests, GitHub Actions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+## 📈 Progress Tracker
+
+| Feature                        | Status      | Notes                        |
+| ------------------------------ | ----------- | ---------------------------- |
+| Project Initialization         | ✅ Complete | Vite, pnpm, folder structure |
+| Basic Whiteboard Canvas        | ✅ Complete | Freehand drawing (Konva.js)  |
+| Drawing Tools                  | ⬜ Pending  | Color, stroke, eraser        |
+| Sticky Notes & Shapes          | ⬜ Pending  |                              |
+| Real-Time Collaboration        | ⬜ Pending  |                              |
+| AI Assistance                  | ⬜ Pending  |                              |
+| Authentication                 | ⬜ Pending  |                              |
+| Export                         | ⬜ Pending  |                              |
+| Testing & CI/CD                | ⬜ Pending  |                              |
+
+---
+
+## 🛠️ Tech Stack
+
+- [Vite](https://vitejs.dev/) (build tool)
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [pnpm](https://pnpm.io/) (package manager)
+- [Tailwind CSS](https://tailwindcss.com/) (styling)
+- [Zustand](https://zustand-demo.pmnd.rs/) (state management)
+- [React Router](https://reactrouter.com/) (routing)
+- [Konva.js](https://konvajs.org/) + [react-konva](https://konvajs.org/docs/react/) (canvas drawing)
+- (Planned) Firebase/Supabase, OpenAI API, Tesseract.js, etc.
+
+---
+
+## 🧭 How to Run
+
+```bash
+pnpm install
+pnpm dev
