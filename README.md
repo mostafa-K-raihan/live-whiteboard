@@ -30,17 +30,17 @@ Designed to strengthen front-end skills using the latest technologies and best p
 
 ## 📈 Progress Tracker
 
-| Feature                        | Status      | Notes                        |
-| ------------------------------ | ----------- | ---------------------------- |
-| Project Initialization         | ✅ Complete | Vite, pnpm, folder structure |
-| Basic Whiteboard Canvas        | ✅ Complete | Freehand drawing (Konva.js)  |
-| Drawing Tools                  | ⬜ Pending  | Color, stroke, eraser        |
-| Sticky Notes & Shapes          | ⬜ Pending  |                              |
-| Real-Time Collaboration        | ⬜ Pending  |                              |
-| AI Assistance                  | ⬜ Pending  |                              |
-| Authentication                 | ⬜ Pending  |                              |
-| Export                         | ⬜ Pending  |                              |
-| Testing & CI/CD                | ⬜ Pending  |                              |
+| Feature                 | Status      | Notes                        |
+| ----------------------- | ----------- | ---------------------------- |
+| Project Initialization  | ✅ Complete | Vite, pnpm, folder structure |
+| Basic Whiteboard Canvas | ✅ Complete | Freehand drawing (Konva.js)  |
+| Drawing Tools           | ⬜ Pending  | Color, stroke, eraser        |
+| Sticky Notes & Shapes   | ⬜ Pending  |                              |
+| Real-Time Collaboration | ⬜ Pending  |                              |
+| AI Assistance           | ⬜ Pending  |                              |
+| Authentication          | ⬜ Pending  |                              |
+| Export                  | ⬜ Pending  |                              |
+| Testing & CI/CD         | ⬜ Pending  |                              |
 
 ---
 
@@ -62,3 +62,4 @@ Designed to strengthen front-end skills using the latest technologies and best p
 ```bash
 pnpm install
 pnpm dev
+```

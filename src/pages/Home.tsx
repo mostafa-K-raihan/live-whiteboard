@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import WhiteboardCanvas from '../components/WhiteboardCanvas';
 
 function Home() {
-  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 600 });
 
   useEffect(() => {
     const updateDimensions = () => {
-      const width = Math.min(window.innerWidth - 40, 1200);
-      const height = Math.min(window.innerHeight - 150, 800);
+      // Make sure we have enough space for both the canvas and tools panel
+      const width = Math.min(window.innerWidth - 40, 1400);
+      const height = Math.min(window.innerHeight - 100, 800);
       setDimensions({ width, height });
     };
 
@@ -20,9 +21,15 @@ function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Live Whiteboard MVP</h1>
-      <WhiteboardCanvas width={dimensions.width} height={dimensions.height} />
+    <div className="min-h-screen bg-gray-50 p-4">
+      <header className="mb-4">
+        <h1 className="text-xl font-medium text-gray-800">Live Whiteboard</h1>
+        <p className="text-sm text-gray-500">Create and share your drawings in real-time</p>
+      </header>
+
+      <div className="bg-white shadow-md rounded">
+        <WhiteboardCanvas width={dimensions.width} height={dimensions.height} />
+      </div>
     </div>
   );
 }
