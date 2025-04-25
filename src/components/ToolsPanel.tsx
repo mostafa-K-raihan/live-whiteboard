@@ -1,103 +1,119 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrawingStore } from '../store/useDrawingStore';
-import { FaPencilAlt, FaEraser } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { HiMenu } from 'react-icons/hi';
 
-const ToolsPanel: React.FC = () => {
+const PRESET_COLORS = [
+  '#000000', // Black
+  '#4A4A4A', // Dark gray
+  '#FF0000', // Red
+  '#FFA500', // Orange
+  '#FFFF00', // Yellow
+  '#800080', // Purple
+  '#FFFFFF', // White
+];
+
+interface ToolsPanelProps {
+  onReset: () => void;
+}
+
+const ToolsPanel: React.FC<ToolsPanelProps> = ({ onReset }) => {
   const { currentTool, color, strokeWidth, setTool, setColor, setStrokeWidth } = useDrawingStore();
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handlePenClick = () => {
+    setTool('pen');
+    setShowMenu(true);
+  };
 
   return (
-    <div className="tools-panel h-full flex flex-col">
-      {/* Tools header */}
-      <div className="bg-gray-100 border-b border-gray-300 py-2 px-1">
-        <h3 className="text-xs font-medium text-center text-gray-700">Tools</h3>
-      </div>
-
-      {/* Drawing Tools - vertical layout */}
-      <div className="tool-grid flex flex-col gap-2 p-2 border-b border-gray-200">
-        {/* Pen tool */}
-        <div className="relative group">
+    <>
+      {/* Main Toolbar */}
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-10">
+        <div className="bg-white rounded-lg shadow-lg p-1.5 flex items-center gap-2">
           <button
-            className={`tool-btn p-2 w-full rounded-full flex items-center justify-center ${
-              currentTool === 'pen'
-                ? 'bg-blue-100 text-blue-600 border border-blue-300'
-                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+            className={`p-2.5 rounded-md transition-all ${
+              currentTool === 'pen' ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100'
             }`}
-            onClick={() => setTool('pen')}
-            aria-label="Pen Tool"
-            title="Pen Tool"
+            onClick={handlePenClick}
           >
-            <FaPencilAlt size={16} />
+            <FaPencilAlt size={20} />
           </button>
-          <div className="absolute left-full ml-2 bg-gray-800 text-white text-xs rounded py-1 px-2 invisible group-hover:visible whitespace-nowrap z-10">
-            Pen Tool
-          </div>
-        </div>
 
-        {/* Eraser tool */}
-        <div className="relative group">
+          <div className="w-px h-6 bg-gray-200" />
+
           <button
-            className={`tool-btn p-2 w-full rounded-full flex items-center justify-center ${
-              currentTool === 'eraser'
-                ? 'bg-blue-100 text-blue-600 border border-blue-300'
-                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-            }`}
-            onClick={() => setTool('eraser')}
-            aria-label="Eraser Tool"
-            title="Eraser Tool"
+            className="p-2.5 rounded-md transition-all text-gray-700 hover:bg-gray-100"
+            onClick={onReset}
           >
-            <FaEraser size={16} />
+            <FaTrash size={20} />
           </button>
-          <div className="absolute left-full ml-2 bg-gray-800 text-white text-xs rounded py-1 px-2 invisible group-hover:visible whitespace-nowrap z-10">
-            Eraser Tool
-          </div>
         </div>
       </div>
 
-      {/* Properties section */}
-      <div className="tool-properties p-2 border-b border-gray-200">
-        {/* Color picker with tooltip */}
-        <div className="mb-3 relative group">
-          <input
-            type="color"
-            value={color}
-            onChange={e => setColor(e.target.value)}
-            className="w-full h-6 cursor-pointer border border-gray-300 rounded-sm"
-            aria-label="Color picker"
-            title="Choose a color"
-          />
-          <div className="absolute left-full ml-2 bg-gray-800 text-white text-xs rounded py-1 px-2 invisible group-hover:visible whitespace-nowrap z-10">
-            Color: {color}
-          </div>
-        </div>
+      {/* Menu Panel with Color Picker */}
+      {showMenu && (
+        <div className="fixed top-4 left-4 z-20">
+          <div className="bg-white rounded-lg shadow-lg p-3">
+            <div className="flex items-center gap-2 mb-3">
+              <button
+                className="text-gray-700 hover:bg-gray-100 p-1.5 rounded-md"
+                onClick={() => setShowMenu(false)}
+              >
+                <HiMenu size={20} />
+              </button>
+              <span className="text-sm font-medium text-gray-700">Colors</span>
+            </div>
 
-        {/* Stroke width with tooltip */}
-        <div className="relative group">
-          <input
-            type="range"
-            min="1"
-            max="20"
-            value={strokeWidth}
-            onChange={e => setStrokeWidth(parseInt(e.target.value))}
-            className="w-full h-1 rounded-lg appearance-none cursor-pointer bg-gray-200"
-            aria-label="Adjust stroke width"
-            title={`Stroke width: ${strokeWidth}px`}
-          />
-          <div className="mt-1 flex justify-center">
-            <div
-              className="rounded-full"
-              style={{
-                width: `${Math.min(strokeWidth, 20)}px`,
-                height: `${Math.min(strokeWidth, 20)}px`,
-                backgroundColor: currentTool === 'pen' ? color : '#ffffff',
-              }}
-            />
-          </div>
-          <div className="absolute left-full ml-2 bg-gray-800 text-white text-xs rounded py-1 px-2 invisible group-hover:visible whitespace-nowrap z-10">
-            Width: {strokeWidth}px
+            {/* Color Presets */}
+            <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-7 gap-2 p-1">
+                {PRESET_COLORS.map((presetColor) => (
+                  <button
+                    key={presetColor}
+                    className={`w-7 h-7 rounded transition-all ${
+                      color === presetColor 
+                        ? 'ring-2 ring-purple-500' 
+                        : 'hover:ring-2 hover:ring-gray-300'
+                    }`}
+                    style={{ 
+                      backgroundColor: presetColor,
+                      border: presetColor === '#ffffff' ? '1px solid #e2e8f0' : 'none'
+                    }}
+                    onClick={() => setColor(presetColor)}
+                  />
+                ))}
+              </div>
+
+              {/* Stroke Width */}
+              <div>
+                <div className="text-sm text-gray-700 mb-2">Stroke Width: {strokeWidth}px</div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="range"
+                    min="1"
+                    max="20"
+                    value={strokeWidth}
+                    onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
+                    className="w-32 h-1.5 rounded-lg appearance-none cursor-pointer bg-gray-200"
+                  />
+                  <div 
+                    className="rounded-full"
+                    style={{
+                      width: `${Math.min(strokeWidth, 20)}px`,
+                      height: `${Math.min(strokeWidth, 20)}px`,
+                      backgroundColor: color,
+                      border: color === '#ffffff' ? '1px solid #e2e8f0' : 'none'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
